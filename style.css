@@ -53,7 +53,7 @@
 
 [data-color="yellow"] {
   height: 33px;
-  background-color: yellow;
+  background-color: rgba(113, 60, 4, 0.958);
 }
 
 #announce-game-won {

@@ -7,7 +7,7 @@
 // * Why are you get a warning in your console? Fix it.
 // * Delete these comment lines!
 
-const stone = null
+let stone = null
 
 // this function is called when a row is clicked. 
 // Open your inspector tool to see what is being captured and can be used.
@@ -17,15 +17,20 @@ const selectRow = (row) => {
   console.log("Yay, we clicked an item", row)
   console.log("Here is the stone's id: ", row.id)
   console.log("Here is the stone's data-size: ", currentRow)
-
+ 
+   if (stone ===null) {
   pickUpStone(row.id)
+  } else {
+    dropStone(row.id)
+  }
+  checkForWin()
 } 
 
 // this function can be called to get the last stone in the stack
 // but there might be something wrong with it...
 const pickUpStone = (rowID) => {
   const selectedRow = document.getElementById(rowID);
-  stone = selectedRow.removeChild(selectedRow.lastChild);
+  stone = selectedRow.removeChild(selectedRow.lastElementChild);
   console.log(stone)
 }
 
@@ -33,9 +38,25 @@ const pickUpStone = (rowID) => {
 // Once you figure that out you'll need to figure out if its a legal move...
 // Something like: if(!stone){pickupStone} else{dropStone}
 
-const dropStone = (rowID, stone) => {
-  document.getElementById(rowID).appendChild(stone)
+const dropStone = (rowID) => {
+  let selectedRow = document.getElementById(rowID)
+  let lastStoneOnRow = selectedRow.lastElementChild
+  if (lastStoneOnRow==null) {
+    selectedRow.appendChild(stone)
+  } else if (lastStoneOnRow.getAttribute('data-size')>stone.getAttribute('data-size')){
+    selectedRow.appendChild(stone)
+  } else {
+    return alert("sorry cant do that! Sucka!")
+  }
   stone = null
+}
+
+const checkForWin = (rowID) => {
+  if (rowID.id=="middle-row" || rowID.id=="top-row"){
+    if (rowID.childElementCount==4) {
+      return alert("you win!")
+    }
+  }
 }
 
 // * Remember you can use your logic from 'main.js' to maintain the rules of the game. But how? Follow the flow of data just like falling dominoes.
